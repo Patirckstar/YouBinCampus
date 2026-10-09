@@ -1,0 +1,8 @@
+
+===== 转换开始 2026-10-08 15:37:43.501 =====
+[2026-10-08 15:37:43.502] [INFO] convertHtml 开始（basePath=d:\Desktop\作业\软件项目管理\大作业\YouBinCampus\docs）
+[2026-10-08 15:37:43.518] [INFO] _renderWithChildPool: 启动 3 个子进程: c:\Users\lgs\.trae-cn\extensions\markdowntoword.markdown-to-word-0.1.94-universal\dist\renderChild.js
+[2026-10-08 15:37:43.517] [INFO] convertHtml: 检测到 3 个 mermaid 代码块，开始预渲染
+[2026-10-08 15:37:43.517] [INFO] preRenderMermaids: 开始预渲染 3 个 mermaid（唯一）
+[2026-10-08 15:37:45.836] [INFO] preRenderMermaids: 完成，0/3 成功，耗时 2.3s
+[2026-10-08 15:37:45.836] [INFO] convertHtml: 预渲染完成，继续解析文档元素
