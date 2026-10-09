@@ -1,0 +1,89 @@
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 搜索栏 */
+.search-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background: #ffffff;
+}
+
+.search-input {
+  flex: 1;
+  height: 68rpx;
+  padding: 0 24rpx;
+  background: #f5f5f5;
+  border-radius: 34rpx;
+  font-size: 26rpx;
+}
+
+.search-btn {
+  margin-left: 16rpx;
+  height: 68rpx;
+  line-height: 68rpx;
+  padding: 0 28rpx;
+  background: #ff5f15;
+  color: #ffffff;
+  font-size: 26rpx;
+  border-radius: 34rpx;
+}
+
+.ai-btn {
+  margin-left: 16rpx;
+  height: 68rpx;
+  line-height: 68rpx;
+  padding: 0 28rpx;
+  background: #fff3ec;
+  color: #ff5f15;
+  font-size: 26rpx;
+  border-radius: 34rpx;
+}
+
+/* 历史记录 */
+.history {
+  background: #ffffff;
+  padding: 20rpx 24rpx 28rpx;
+}
+
+.history-title {
+  font-size: 26rpx;
+  color: #999999;
+  margin-bottom: 16rpx;
+}
+
+.history-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.history-tag {
+  padding: 8rpx 24rpx;
+  margin: 0 16rpx 16rpx 0;
+  font-size: 24rpx;
+  color: #666666;
+  background: #f5f5f5;
+  border-radius: 26rpx;
+}
+
+/* 结果列表 */
+.list {
+  padding: 20rpx 24rpx;
+}
+
+.list goods-card {
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.loading-tip {
+  text-align: center;
+  color: #999999;
+  font-size: 24rpx;
+  padding: 20rpx 0;
+}

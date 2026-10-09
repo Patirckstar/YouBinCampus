@@ -1,60 +1,26 @@
 {
-  "pages": ["pages/home/home", "pages/category/index", "pages/cart/index", "pages/usercenter/index"],
-  "subpackages": [
-    {
-      "root": "pages/user",
-      "name": "user",
-      "pages": ["person-info/index", "address/list/index", "address/edit/index", "name-edit/index"]
-    },
-    {
-      "root": "pages/goods",
-      "name": "goods",
-      "pages": [
-        "list/index",
-        "details/index",
-        "search/index",
-        "result/index",
-        "comments/index",
-        "comments/create/index"
-      ]
-    },
-    {
-      "root": "pages/order",
-      "name": "order",
-      "pages": [
-        "order-confirm/index",
-        "receipt/index",
-        "pay-result/index",
-        "order-list/index",
-        "order-detail/index",
-        "apply-service/index",
-        "after-service-list/index",
-        "after-service-detail/index",
-        "fill-tracking-no/index",
-        "delivery-detail/index",
-        "invoice/index"
-      ]
-    },
-    {
-      "root": "pages/coupon",
-      "name": "coupon",
-      "pages": ["coupon-list/index", "coupon-detail/index", "coupon-activity-goods/index"]
-    },
-    {
-      "root": "pages/promotion",
-      "name": "promotion",
-      "pages": ["promotion-detail/index"]
-    }
+  "pages": [
+    "pages/index/index",
+    "pages/category/index",
+    "pages/mine/index",
+    "pages/publish/index",
+    "pages/detail/index",
+    "pages/search/index",
+    "pages/mylist/index"
   ],
+  "window": {
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "校园二手",
+    "backgroundColor": "#f5f5f5"
+  },
   "tabBar": {
-    "custom": true,
-    "color": "#666666",
+    "color": "#999999",
     "selectedColor": "#FF5F15",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/home/home",
+        "pagePath": "pages/index/index",
         "text": "首页"
       },
       {
@@ -62,28 +28,13 @@
         "text": "分类"
       },
       {
-        "pagePath": "pages/cart/index",
-        "text": "购物车"
-      },
-      {
-        "pagePath": "pages/usercenter/index",
+        "pagePath": "pages/mine/index",
         "text": "我的"
       }
     ]
   },
-  "requiredPrivateInfos": ["chooseAddress"],
-  "lazyCodeLoading": "requiredComponents",
-  "usingComponents": {},
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarTextStyle": "black"
+  "usingComponents": {
+    "goods-card": "/components/goods-card/index"
   },
-  "sitemapLocation": "sitemap.json",
-  "permission": {
-    "scope.userLocation": {
-      "desc": "你的位置信息将用于小程序位置接口的效果展示"
-    }
-  }
+  "sitemapLocation": "sitemap.json"
 }

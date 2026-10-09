@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="list">
+    <block wx:for="{{list}}" wx:key="id">
+      <view class="item">
+        <goods-card goods="{{item}}" show-status="{{true}}" bind:tap="onGoodsTap" />
+        <view wx:if="{{type === 'my-goods'}}" class="actions">
+          <text class="act" bind:tap="onEdit" data-id="{{item.id}}">编辑</text>
+          <text wx:if="{{item.status === 1}}" class="act act-sold" bind:tap="onSold" data-id="{{item.id}}">标记已售</text>
+          <text class="act act-del" bind:tap="onDelete" data-id="{{item.id}}">删除</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{!list.length && !loading}}" class="empty">
+      {{type === 'my-goods' ? '你还没有发布过商品' : '你还没有收藏过商品'}}
+    </view>
+  </view>
+</view>

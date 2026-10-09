@@ -1,0 +1,31 @@
+<view class="page">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜索商品关键词"
+      value="{{keyword}}"
+      bindinput="onInput"
+      confirm-type="search"
+      bindconfirm="onSearch"
+    />
+    <button class="search-btn" bind:tap="onSearch">搜索</button>
+    <button class="ai-btn" bind:tap="onAiSearch">AI 搜</button>
+  </view>
+
+  <!-- 最近搜索 -->
+  <view wx:if="{{history.length}}" class="history">
+    <view class="history-title">最近搜索</view>
+    <view class="history-tags">
+      <text wx:for="{{history}}" wx:key="*this" class="history-tag" bind:tap="onHistoryTap" data-kw="{{item}}">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 结果列表 -->
+  <view class="list">
+    <goods-card wx:for="{{list}}" wx:key="id" goods="{{item}}" bind:tap="onGoodsTap" />
+    <view wx:if="{{searched && !list.length && !loading}}" class="empty">没有找到相关商品</view>
+    <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+    <view wx:if="{{!loading && finished && list.length}}" class="loading-tip">已经到底啦</view>
+  </view>
+</view>

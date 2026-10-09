@@ -1,0 +1,77 @@
+<view class="page">
+  <view class="form">
+    <view class="form-item">
+      <text class="label">标题</text>
+      <input class="input" placeholder="请输入商品标题" value="{{form.title}}" bindinput="onTitleInput" maxlength="60" />
+    </view>
+
+    <view class="form-item form-item-col">
+      <text class="label">描述</text>
+      <textarea
+        class="textarea"
+        placeholder="描述一下商品的成色、入手渠道等"
+        value="{{form.description}}"
+        bindinput="onDescInput"
+        maxlength="500"
+        auto-height
+      ></textarea>
+    </view>
+
+    <view class="form-item">
+      <text class="label">分类</text>
+      <picker class="picker" range="{{categoryNames}}" value="{{categoryIndex}}" bindchange="onCategoryChange">
+        <view class="picker-value {{categoryIndex < 0 ? 'picker-placeholder' : ''}}">
+          {{categoryIndex >= 0 ? categoryNames[categoryIndex] : '请选择分类'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">价格</text>
+      <view class="input-row">
+        <text class="price-symbol">¥</text>
+        <input class="input price-input" type="digit" placeholder="0.00" value="{{form.price}}" bindinput="onPriceInput" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 图片上传 -->
+  <view class="section">
+    <view class="section-title">商品图片（{{images.length}}/9）</view>
+    <view class="img-grid">
+      <view wx:for="{{imageUrls}}" wx:key="*this" class="img-item">
+        <image class="img" src="{{item}}" mode="aspectFill" />
+        <view class="img-del" catch:tap="onRemoveImage" data-index="{{index}}">×</view>
+      </view>
+      <view wx:if="{{images.length < 9}}" class="img-add" bind:tap="onChooseImage">＋</view>
+    </view>
+  </view>
+
+  <!-- 智能发布 -->
+  <view class="section">
+    <button class="btn-agent" bind:tap="onAgentTap">✨ 智能发布（AI 帮你写描述）</button>
+  </view>
+
+  <!-- 提交 -->
+  <view class="footer">
+    <button class="btn-submit {{submitting ? 'btn-disabled' : ''}}" bind:tap="onSubmit">{{submitting ? '提交中...' : '提交'}}</button>
+  </view>
+
+  <!-- 智能发布弹层 -->
+  <view wx:if="{{showAgent}}" class="mask" catch:tap="onCancelAgent">
+    <view class="dialog" catch:tap="noop">
+      <view class="dialog-title">智能发布</view>
+      <textarea
+        class="dialog-textarea"
+        placeholder="例如：九成新 iPad，买了半年，很少用，1800 出"
+        value="{{agentText}}"
+        bindinput="onAgentInput"
+        maxlength="300"
+      ></textarea>
+      <view class="dialog-btns">
+        <button class="dialog-btn dialog-cancel" bind:tap="onCancelAgent">取消</button>
+        <button class="dialog-btn dialog-confirm" bind:tap="onConfirmAgent">生成</button>
+      </view>
+    </view>
+  </view>
+</view>

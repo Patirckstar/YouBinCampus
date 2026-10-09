@@ -1,8 +1,28 @@
-<view class="wrap">
-  <goods-category
-    level="{{3}}"
-    custom-class="goods-category-class"
-    category="{{list}}"
-    bind:changeCategory="onChange"
-  />
+<view class="cat-page">
+  <!-- 左侧分类 -->
+  <scroll-view scroll-y class="sidebar">
+    <view
+      wx:for="{{categories}}"
+      wx:key="id"
+      class="side-item {{activeIndex === index ? 'side-active' : ''}}"
+      bind:tap="onCategoryTap"
+      data-index="{{index}}"
+    >
+      <view class="side-indicator" wx:if="{{activeIndex === index}}"></view>
+      <text class="side-name">{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 右侧商品 -->
+  <scroll-view scroll-y class="content" bindscrolltolower="onReachBottom" lower-threshold="50">
+    <goods-card
+      wx:for="{{goodsList}}"
+      wx:key="id"
+      goods="{{item}}"
+      bind:tap="onGoodsTap"
+    />
+    <view wx:if="{{!goodsList.length && !loading}}" class="empty">该分类暂无商品</view>
+    <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+    <view wx:if="{{!loading && finished && goodsList.length}}" class="loading-tip">已经到底啦</view>
+  </scroll-view>
 </view>

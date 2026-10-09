@@ -1,0 +1,6 @@
+{
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50,
+  "navigationBarTitleText": "校园二手",
+  "usingComponents": {}
+}

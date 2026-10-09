@@ -1,0 +1,43 @@
+<view class="page">
+  <!-- 顶部搜索框 -->
+  <view class="search-bar" bind:tap="onSearchTap">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索你想要的宝贝</text>
+    </view>
+  </view>
+
+  <!-- 分类 chips -->
+  <scroll-view scroll-x class="chips" enhanced show-scrollbar="{{false}}">
+    <view class="chips-inner">
+      <view class="chip {{activeIndex === -1 ? 'chip-active' : ''}}" bind:tap="onCategoryTap" data-index="{{-1}}">全部</view>
+      <view
+        wx:for="{{categories}}"
+        wx:for-index="idx"
+        wx:key="id"
+        class="chip {{activeIndex === idx ? 'chip-active' : ''}}"
+        bind:tap="onCategoryTap"
+        data-index="{{idx}}"
+      >{{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 商品列表 -->
+  <view class="list">
+    <goods-card
+      wx:for="{{goodsList}}"
+      wx:key="id"
+      goods="{{item}}"
+      bind:tap="onGoodsTap"
+    />
+    <view wx:if="{{!goodsList.length && !loading}}" class="empty">还没有商品，快去发布第一件吧～</view>
+    <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+    <view wx:if="{{!loading && finished && goodsList.length}}" class="loading-tip">已经到底啦</view>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="publish-btn" bind:tap="onPublish">
+    <text class="publish-plus">＋</text>
+    <text>我要发布</text>
+  </view>
+</view>

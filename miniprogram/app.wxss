@@ -1,7 +1,44 @@
-@import 'style/iconfont.wxss';
+/* 全局基础样式 */
+page {
+  background: #f5f5f5;
+  color: #333;
+  font-size: 28rpx;
+}
 
-@import 'style/theme.wxss';
+/* 通用按钮：去掉默认边框与背景 */
+button {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  line-height: inherit;
+  font-size: inherit;
+  color: inherit;
+}
 
-.cell--noborder .t-cell::after {
-  border-bottom: none !important;
+button::after {
+  border: none;
+}
+
+/* 空状态文案 */
+.empty {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999999;
+  font-size: 26rpx;
+}
+
+/* 价格橙色样式 */
+.price {
+  color: #ff5f15;
+  font-weight: 600;
+}
+
+/* 主色按钮 */
+.btn-primary {
+  background: #ff5f15;
+  color: #ffffff;
+  border-radius: 44rpx;
+  text-align: center;
 }

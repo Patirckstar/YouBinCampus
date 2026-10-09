@@ -1,0 +1,53 @@
+# ============================================
+# 应用基础配置
+# ============================================
+spring:
+  application:
+    name: backend
+
+  # 导入本机敏感配置（密码/密钥，已被 .gitignore 忽略，不入库）
+  config:
+    import: optional:classpath:application-secret.yml
+
+  # 数据源（MySQL 本机）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/youbin_campus?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: mao
+    # password 隔离到 application-secret.yml（不入 Git 仓库）
+
+  # 文件上传大小限制（商品图片）
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# ============================================
+# 服务端口
+# ============================================
+server:
+  port: 8080
+
+# ============================================
+# JWT 鉴权配置（演示密钥，生产环境请更换）
+# ============================================
+jwt:
+  secret: youbin-campus-2026-jwt-secret-key-change-me
+
+# ============================================
+# MyBatis-Plus 配置
+# ============================================
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true                                   # 下划线转驼峰：user_id -> userId
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl                # 打印 SQL，上线前可删除
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto                                                      # 主键自增
+
+# ============================================
+# 本地图片上传存储（商品图片）
+# ============================================
+upload:
+  path: ./upload/                                                        # 已被 .gitignore 忽略

@@ -1,23 +1,71 @@
-.tabbar-position {
-  position: fixed !important;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-
-.wrap {
+.cat-page {
+  display: flex;
   height: 100vh;
-  overflow: hidden;
-}
-.goods-category-class {
-  background-color: #f6f6f6 !important;
-  height: 100%;
-}
-.goods-category-class .goods-category-normal-item-container-item {
-  margin-top: 20rpx;
 }
 
-page {
-  min-height: none;
-  padding-bottom: 0;
+/* 左侧分类 */
+.sidebar {
+  width: 180rpx;
+  height: 100vh;
+  background: #f5f5f5;
+  flex-shrink: 0;
+  padding-bottom: 140rpx;
+  box-sizing: border-box;
+}
+
+.side-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100rpx;
+  padding: 0 16rpx;
+  color: #666666;
+  font-size: 26rpx;
+}
+
+.side-active {
+  background: #ffffff;
+  color: #ff5f15;
+  font-weight: 600;
+}
+
+.side-indicator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8rpx;
+  height: 36rpx;
+  background: #ff5f15;
+  border-radius: 4rpx;
+}
+
+.side-name {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* 右侧商品 */
+.content {
+  flex: 1;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 20rpx;
+  padding-bottom: 140rpx;
+  background: #ffffff;
+}
+
+.content goods-card {
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.loading-tip {
+  text-align: center;
+  color: #999999;
+  font-size: 24rpx;
+  padding: 20rpx 0;
 }

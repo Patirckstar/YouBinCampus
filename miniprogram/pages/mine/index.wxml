@@ -1,0 +1,25 @@
+<view class="page">
+  <!-- 用户信息卡 -->
+  <view class="user-card">
+    <image wx:if="{{userInfo.avatarUrl}}" class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+    <view wx:else class="avatar avatar-placeholder">友</view>
+    <view class="user-info">
+      <view class="nickname">{{userInfo.nickname || '校园用户'}}</view>
+      <view class="uid">欢迎使用校园二手</view>
+    </view>
+  </view>
+
+  <!-- 入口列表 -->
+  <view class="menu">
+    <view class="menu-item" bind:tap="goMyGoods">
+      <text class="menu-icon">📦</text>
+      <text class="menu-text">我发布的</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bind:tap="goFavorite">
+      <text class="menu-icon">⭐</text>
+      <text class="menu-text">我收藏的</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+</view>

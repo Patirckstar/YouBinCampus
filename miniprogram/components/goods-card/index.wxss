@@ -1,133 +1,111 @@
-.goods-card {
+/* 商品卡片 */
+.gc {
+  display: flex;
+  background: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+  padding: 20rpx;
   box-sizing: border-box;
-  font-size: 24rpx;
-  border-radius: 0 0 16rpx 16rpx;
-  border-bottom: none;
 }
 
-.goods-card__main {
-  position: relative;
+.gc-thumb {
+  flex-shrink: 0;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.gc-img {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 12rpx;
+  display: block;
+}
+
+.gc-placeholder {
+  background: #f0f0f0;
+  color: #bbbbbb;
+  font-size: 24rpx;
   display: flex;
-  line-height: 1;
-  padding: 0;
-  background: transparent;
-  width: 342rpx;
-  border-radius: 0 0 16rpx 16rpx;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16rpx;
-  flex-direction: column;
 }
 
-.goods-card__thumb {
-  flex-shrink: 0;
-  position: relative;
-  width: 340rpx;
-  height: 340rpx;
-}
-
-.goods-card__thumb:empty {
-  display: none;
-  margin: 0;
-}
-
-.goods-card__img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 16rpx 16rpx 0 0;
-  overflow: hidden;
-}
-
-.goods-card__body {
-  display: flex;
-  flex: 1 1 auto;
-  background: #fff;
-  border-radius: 0 0 16rpx 16rpx;
-  padding: 16rpx 24rpx 18rpx;
-  flex-direction: column;
-}
-
-.goods-card__upper {
+.gc-body {
+  flex: 1;
+  min-width: 0;
+  margin-left: 20rpx;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  flex: 1 1 auto;
 }
 
-.goods-card__title {
-  flex-shrink: 0;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 400;
+.gc-title {
+  font-size: 30rpx;
+  color: #333333;
+  line-height: 40rpx;
+  height: 80rpx;
   display: -webkit-box;
-  height: 72rpx;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  word-break: break-word;
-  line-height: 36rpx;
+  word-break: break-all;
 }
 
-.goods-card__tags {
+.gc-meta {
+  margin-top: 12rpx;
   display: flex;
-  flex-direction: row;
+  align-items: center;
   flex-wrap: wrap;
-  margin: 8rpx 0 0 0;
+  font-size: 22rpx;
+  color: #999999;
 }
 
-.goods-card__tag {
-  color: #fa4126;
-  background: transparent;
-  font-size: 20rpx;
-  border: 1rpx solid #fa4126;
-  padding: 0 8rpx;
-  border-radius: 16rpx;
-  line-height: 30rpx;
-  margin: 0 8rpx 8rpx 0;
-  display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  word-break: keep-all;
-  text-overflow: ellipsis;
+.gc-cat {
+  padding: 2rpx 12rpx;
+  border-radius: 8rpx;
+  background: #fff3ec;
+  color: #ff5f15;
+  margin-right: 12rpx;
 }
 
-.goods-card__down {
+.gc-time {
+  margin-left: 12rpx;
+}
+
+.gc-bottom {
+  margin-top: auto;
   display: flex;
-  position: relative;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: baseline;
-  line-height: 32rpx;
-  margin: 8rpx 0 0 0;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.goods-card__origin-price {
-  white-space: nowrap;
-  font-weight: 700;
-  order: 2;
-  color: #bbbbbb;
+.gc-price {
+  color: #ff5f15;
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.gc-price-symbol {
   font-size: 24rpx;
-  margin: 0 0 0 8rpx;
+  font-weight: 500;
 }
 
-.goods-card__add-cart {
-  order: 3;
-  margin: auto 0 0 auto;
-  position: absolute;
-  bottom: 0;
-  right: 0;
+.gc-status {
+  font-size: 22rpx;
+  padding: 2rpx 14rpx;
+  border-radius: 8rpx;
 }
 
-.spec-for-price {
-  font-size: 36rpx;
-  white-space: nowrap;
-  font-weight: 700;
-  order: 1;
-  color: #fa4126;
-  margin: 0;
+.status-on {
+  color: #ff5f15;
+  background: #fff3ec;
 }
 
-.spec-for-symbol {
-  font-size: 24rpx;
+.status-off {
+  color: #999999;
+  background: #f0f0f0;
+}
+
+.status-sold {
+  color: #ffffff;
+  background: #bbbbbb;
 }
