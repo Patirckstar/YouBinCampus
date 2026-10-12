@@ -12,6 +12,12 @@ Page({
     finished: false,
   },
 
+  onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().init();
+    }
+  },
+
   onLoad() {
     this.loadCategories();
   },

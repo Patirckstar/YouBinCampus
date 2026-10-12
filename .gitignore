@@ -42,7 +42,8 @@ project.private.config.json
 # ===== 本地上传文件 / 图片 =====
 upload/
 uploads/
-static/uploads/
+static/
+static
 
 # ===== 密钥 / 本地配置（大模型 API Key 等） =====
 .env

@@ -27,6 +27,9 @@ public class LlmClient {
     @Value("${llm.model:deepseek-chat}")
     private String model;
 
+    @Value("${llm.tracking-id:}")
+    private String trackingId;
+
     public String chat(String systemPrompt, String userPrompt) {
         if (baseUrl == null || baseUrl.isBlank() || apiKey == null || apiKey.isBlank()) {
             throw new RuntimeException("未配置大模型，请先在 application-secret.yml 填写 llm.base-url / llm.api-key");
@@ -40,12 +43,16 @@ public class LlmClient {
                 .set("temperature", 0.3);
 
         String url = baseUrl.endsWith("/") ? baseUrl + "chat/completions" : baseUrl + "/chat/completions";
-        try (HttpResponse resp = HttpRequest.post(url)
+        HttpRequest request = HttpRequest.post(url)
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Content-Type", "application/json")
                 .body(body.toString())
-                .timeout(30000)
-                .execute()) {
+                .timeout(30000);
+        // 追踪 ID 为可选字段，配置了才发送（DeepSeek 官方会忽略未知请求头）
+        if (trackingId != null && !trackingId.isBlank()) {
+            request.header("X-Tracking-Id", trackingId);
+        }
+        try (HttpResponse resp = request.execute()) {
             String respBody = resp.body();
             JSONObject json = JSONUtil.parseObj(respBody);
             if (json.get("choices") != null) {

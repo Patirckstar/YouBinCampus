@@ -1,3 +1,6 @@
+/* 引入 TDesign wr 图标字体（底部导航等 t-icon 图标依赖，需全局注入） */
+@import './style/iconfont.wxss';
+
 /* 全局基础样式 */
 page {
   background: #f5f5f5;
