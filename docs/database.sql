@@ -106,3 +106,18 @@ VALUES ('教材书籍', 1),
     ('生活用品', 3),
     ('体育器材', 4),
     ('其他', 5);
+
+-- ============================================================
+-- 8. 想要标记表 want（买家对在售商品标记「想要」）
+-- ============================================================
+DROP TABLE IF EXISTS `want`;
+
+CREATE TABLE `want` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '想要标记ID',
+  `user_id` BIGINT NOT NULL COMMENT '买家用户ID',
+  `goods_id` BIGINT NOT NULL COMMENT '商品ID',
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '标记时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_user_goods` (`user_id`, `goods_id`),
+  KEY `idx_goods_id` (`goods_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '想要标记表';

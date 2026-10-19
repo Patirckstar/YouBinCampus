@@ -52,6 +52,8 @@ Page({
     timeText: '',
     isFav: false,
     isOwner: false,
+    isWanted: false,
+    wantCount: 0,
     loading: true,
   },
 
@@ -60,6 +62,7 @@ Page({
     this.setData({ id });
     this.loadDetail(id);
     this.checkFavorite(id);
+    this.checkWant(id);
   },
 
   loadDetail(id) {
@@ -73,6 +76,7 @@ Page({
           avatarUrl: imgUrl(goods.sellerAvatar || ''),
           timeText: formatTime(goods.createTime),
           isOwner: String(goods.userId) === String(userId),
+          wantCount: goods.wantCount || 0,
           loading: false,
         });
       })
@@ -91,17 +95,36 @@ Page({
       .then((isFav) => {
         this.setData({ isFav: !!isFav });
       })
-      .catch(() => {});
+      .catch(() => { });
   },
 
-  // 联系卖家
+  checkWant(id) {
+    get('/api/want/check/' + id)
+      .then((isWanted) => {
+        this.setData({ isWanted: !!isWanted });
+      })
+      .catch(() => { });
+  },
+
+  // 联系卖家：先取电话，有电话才记录留痕并拨号
   onContact() {
-    const goods = this.data.goods;
-    if (!goods || !goods.phone) {
-      wx.showToast({ title: '卖家未留电话', icon: 'none' });
-      return;
-    }
-    wx.makePhoneCall({ phoneNumber: goods.phone });
+    const id = this.data.id;
+    get('/api/goods/' + id + '/contact')
+      .then((data) => {
+        const phone = data && data.phone;
+        if (!phone) {
+          wx.showToast({ title: '卖家未留电话', icon: 'none' });
+          return;
+        }
+        // 记录留痕失败不影响拨号
+        post('/api/contact/' + id).catch(() => { });
+        wx.makePhoneCall({ phoneNumber: phone });
+      })
+      .catch((err) => {
+        if (err && err.code === 403) {
+          wx.showToast({ title: '不能联系自己发布的商品', icon: 'none' });
+        }
+      });
   },
 
   // 收藏 / 取消收藏
@@ -114,7 +137,21 @@ Page({
         this.setData({ isFav: !isFav });
         wx.showToast({ title: isFav ? '已取消收藏' : '已收藏', icon: 'success' });
       })
-      .catch(() => {});
+      .catch(() => { });
+  },
+
+  // 想要 / 取消想要
+  onToggleWant() {
+    const id = this.data.id;
+    const isWanted = this.data.isWanted;
+    const req = isWanted ? del('/api/want/' + id) : post('/api/want/' + id);
+    req
+      .then(() => {
+        this.setData({ isWanted: !isWanted });
+        wx.showToast({ title: isWanted ? '已取消想要' : '已想要', icon: 'success' });
+        this.loadDetail(id);
+      })
+      .catch(() => { });
   },
 
   // 编辑
@@ -135,10 +172,91 @@ Page({
               wx.showToast({ title: '已标记已售', icon: 'success' });
               this.loadDetail(id);
             })
-            .catch(() => {});
+            .catch(() => { });
         }
       },
     });
+  },
+
+  // 下架
+  onOffline() {
+    const id = this.data.id;
+    wx.showModal({
+      title: '提示',
+      content: '确认下架该商品？',
+      success: (res) => {
+        if (res.confirm) {
+          put('/api/goods/' + id + '/offline')
+            .then(() => {
+              wx.showToast({ title: '已下架', icon: 'success' });
+              this.loadDetail(id);
+            })
+            .catch(() => { });
+        }
+      },
+    });
+  },
+
+  // 上架
+  onOnline() {
+    const id = this.data.id;
+    wx.showModal({
+      title: '提示',
+      content: '确认上架该商品？',
+      success: (res) => {
+        if (res.confirm) {
+          put('/api/goods/' + id + '/online')
+            .then(() => {
+              wx.showToast({ title: '已上架', icon: 'success' });
+              this.loadDetail(id);
+            })
+            .catch(() => { });
+        }
+      },
+    });
+  },
+
+  // 谁想要（仅卖家）
+  onShowWanters() {
+    const id = this.data.id;
+    get('/api/want/goods/' + id)
+      .then((list) => {
+        const arr = list || [];
+        if (!arr.length) {
+          wx.showToast({ title: '还没有人想要', icon: 'none' });
+          return;
+        }
+        const names = arr
+          .slice(0, 5)
+          .map((u) => (u && u.nickname) || '校园用户')
+          .join('、');
+        const more = arr.length > 5 ? ' 等' + arr.length + '人' : '';
+        wx.showModal({
+          title: '谁想要(' + arr.length + ')',
+          content: names + more,
+          showCancel: false,
+        });
+      })
+      .catch(() => {});
+  },
+
+  // 联系记录（仅卖家）
+  onShowContacts() {
+    const id = this.data.id;
+    get('/api/contact/goods/' + id)
+      .then((list) => {
+        const arr = list || [];
+        if (!arr.length) {
+          wx.showToast({ title: '还没有人联系', icon: 'none' });
+          return;
+        }
+        wx.showModal({
+          title: '联系记录',
+          content: '共 ' + arr.length + ' 人联系过你',
+          showCancel: false,
+        });
+      })
+      .catch(() => {});
   },
 
   // 删除
@@ -155,7 +273,7 @@ Page({
                 wx.navigateBack();
               }, 1200);
             })
-            .catch(() => {});
+            .catch(() => { });
         }
       },
     });

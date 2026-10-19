@@ -45,7 +45,13 @@
   <view wx:if="{{isOwner}}" class="owner-bar">
     <button class="owner-btn" bind:tap="onEdit">编辑</button>
     <button wx:if="{{goods.status === 1}}" class="owner-btn owner-sold" bind:tap="onSold">标记已售</button>
+    <button wx:if="{{goods.status === 1}}" class="owner-btn owner-off" bind:tap="onOffline">下架</button>
+    <button wx:if="{{goods.status === 0}}" class="owner-btn owner-on" bind:tap="onOnline">上架</button>
     <button class="owner-btn owner-del" bind:tap="onDelete">删除</button>
+  </view>
+  <view wx:if="{{isOwner}}" class="owner-bar owner-sub">
+    <button class="owner-btn owner-want" bind:tap="onShowWanters">谁想要({{wantCount}})</button>
+    <button class="owner-btn owner-contact" bind:tap="onShowContacts">联系记录</button>
   </view>
 </view>
 
@@ -58,5 +64,9 @@
     <text class="fav-icon">{{isFav ? '❤' : '🤍'}}</text>
     <text class="fav-text">{{isFav ? '已收藏' : '收藏'}}</text>
   </view>
-  <button class="contact-btn" bind:tap="onContact">联系卖家</button>
+  <view wx:if="{{!isOwner}}" class="fav-btn want-btn {{isWanted ? 'wanted' : ''}}" bind:tap="onToggleWant">
+    <text class="fav-icon">{{isWanted ? '⭐' : '☆'}}</text>
+    <text class="fav-text">{{isWanted ? '已想要' : '想要'}}</text>
+  </view>
+  <button wx:if="{{!isOwner}}" class="contact-btn" bind:tap="onContact">联系卖家</button>
 </view>

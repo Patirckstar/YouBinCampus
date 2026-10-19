@@ -43,4 +43,8 @@ Page({
   goFavorite() {
     wx.navigateTo({ url: '/pages/mylist/index?type=favorite' });
   },
+
+  goWant() {
+    wx.navigateTo({ url: '/pages/mylist/index?type=want' });
+  },
 });

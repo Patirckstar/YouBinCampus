@@ -171,6 +171,30 @@
   background: #fff1f0;
 }
 
+.owner-sub {
+  margin-top: 16rpx;
+}
+
+.owner-want {
+  color: #ff5f15;
+  background: #fff3ec;
+}
+
+.owner-contact {
+  color: #ff5f15;
+  background: #fff3ec;
+}
+
+.owner-off {
+  color: #999999;
+  background: #f0f0f0;
+}
+
+.owner-on {
+  color: #07c160;
+  background: #e8f9ef;
+}
+
 /* 底部操作条 */
 .bottom-bar {
   position: fixed;
@@ -204,6 +228,14 @@
 }
 
 .faved .fav-text {
+  color: #ff5f15;
+}
+
+.want-btn {
+  margin-left: 8rpx;
+}
+
+.wanted .fav-text {
   color: #ff5f15;
 }
 

@@ -11,10 +11,12 @@ import com.youbin.entity.Category;
 import com.youbin.entity.Favorite;
 import com.youbin.entity.Goods;
 import com.youbin.entity.User;
+import com.youbin.entity.Want;
 import com.youbin.mapper.CategoryMapper;
 import com.youbin.mapper.FavoriteMapper;
 import com.youbin.mapper.GoodsMapper;
 import com.youbin.mapper.UserMapper;
+import com.youbin.mapper.WantMapper;
 import com.youbin.vo.GoodsVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ public class GoodsService {
     private final CategoryMapper categoryMapper;
     private final UserMapper userMapper;
     private final FavoriteMapper favoriteMapper;
+    private final WantMapper wantMapper;
 
     public GoodsVO publish(Long userId, GoodsDTO dto) {
         Goods g = new Goods();
@@ -68,6 +71,23 @@ public class GoodsService {
     public void markSold(Long userId, Long id) {
         Goods g = requireOwn(userId, id);
         g.setStatus(2);
+        goodsMapper.updateById(g);
+    }
+
+    /** 下架：仅将状态置为 0，不改动其它字段 */
+    public void offline(Long userId, Long id) {
+        Goods g = requireOwn(userId, id);
+        g.setStatus(0);
+        goodsMapper.updateById(g);
+    }
+
+    /** 上架：仅将状态置为 1；已售（status=2）商品不可重新上架 */
+    public void online(Long userId, Long id) {
+        Goods g = requireOwn(userId, id);
+        if (g.getStatus() != null && g.getStatus() == 2) {
+            throw new BizException(ResultCode.BAD_REQUEST.getCode(), "已售商品不能重新上架");
+        }
+        g.setStatus(1);
         goodsMapper.updateById(g);
     }
 
@@ -112,7 +132,31 @@ public class GoodsService {
 
         Category c = categoryMapper.selectById(g.getCategoryId());
         User seller = userMapper.selectById(g.getUserId());
-        return toVO(g, c == null ? null : c.getName(), seller);
+        GoodsVO vo = toVO(g, c == null ? null : c.getName(), seller);
+        Long wantCount = wantMapper.selectCount(new LambdaQueryWrapper<Want>().eq(Want::getGoodsId, id));
+        vo.setWantCount(wantCount == null ? 0 : wantCount.intValue());
+        return vo;
+    }
+
+    /**
+     * 按 ID 批量查询并转换为 GoodsVO，保持传入 goodsIds 的顺序。
+     * 供 WantService 复用现有拼装能力，避免重复实现 toVO/toVOList。
+     */
+    public List<GoodsVO> listVOByIds(List<Long> goodsIds) {
+        if (goodsIds == null || goodsIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Goods> list = goodsMapper.selectBatchIds(goodsIds);
+        Map<Long, GoodsVO> map = toVOList(list).stream()
+                .collect(Collectors.toMap(GoodsVO::getId, v -> v, (a, b) -> a));
+        List<GoodsVO> result = new ArrayList<>();
+        for (Long id : goodsIds) {
+            GoodsVO vo = map.get(id);
+            if (vo != null) {
+                result.add(vo);
+            }
+        }
+        return result;
     }
 
     public List<GoodsVO> myGoods(Long userId) {

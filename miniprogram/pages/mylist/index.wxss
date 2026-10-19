@@ -40,3 +40,13 @@
   color: #ff4d4f;
   background: #fff1f0;
 }
+
+.act-off {
+  color: #999999;
+  background: #f0f0f0;
+}
+
+.act-on {
+  color: #07c160;
+  background: #e8f9ef;
+}

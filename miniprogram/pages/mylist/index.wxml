@@ -6,13 +6,15 @@
         <view wx:if="{{type === 'my-goods'}}" class="actions">
           <text class="act" bind:tap="onEdit" data-id="{{item.id}}">编辑</text>
           <text wx:if="{{item.status === 1}}" class="act act-sold" bind:tap="onSold" data-id="{{item.id}}">标记已售</text>
+          <text wx:if="{{item.status === 1}}" class="act act-off" bind:tap="onOffline" data-id="{{item.id}}">下架</text>
+          <text wx:if="{{item.status === 0}}" class="act act-on" bind:tap="onOnline" data-id="{{item.id}}">上架</text>
           <text class="act act-del" bind:tap="onDelete" data-id="{{item.id}}">删除</text>
         </view>
       </view>
     </block>
 
     <view wx:if="{{!list.length && !loading}}" class="empty">
-      {{type === 'my-goods' ? '你还没有发布过商品' : '你还没有收藏过商品'}}
+      {{type === 'my-goods' ? '你还没有发布过商品' : (type === 'want' ? '你还没有想要过的商品' : '你还没有收藏过商品')}}
     </view>
   </view>
 </view>

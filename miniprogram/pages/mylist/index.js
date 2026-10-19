@@ -2,7 +2,7 @@ const { get, put, del } = require('../../utils/request');
 
 Page({
   data: {
-    type: 'my-goods', // my-goods 我发布的 / favorite 我收藏的
+    type: 'my-goods', // my-goods 我发布的 / favorite 我收藏的 / want 我想要的
     list: [],
     loading: false,
   },
@@ -10,9 +10,13 @@ Page({
   onLoad(options) {
     const type = (options && options.type) || 'my-goods';
     this.setData({ type });
-    wx.setNavigationBarTitle({
-      title: type === 'my-goods' ? '我发布的' : '我收藏的',
-    });
+    let title = '我发布的';
+    if (type === 'favorite') {
+      title = '我收藏的';
+    } else if (type === 'want') {
+      title = '我想要的';
+    }
+    wx.setNavigationBarTitle({ title });
   },
 
   onShow() {
@@ -28,7 +32,14 @@ Page({
   loadList() {
     return new Promise((resolve) => {
       this.setData({ loading: true });
-      const req = this.data.type === 'my-goods' ? get('/api/user/my-goods') : get('/api/favorite/list');
+      let req;
+      if (this.data.type === 'my-goods') {
+        req = get('/api/user/my-goods');
+      } else if (this.data.type === 'want') {
+        req = get('/api/want/mine');
+      } else {
+        req = get('/api/favorite/list');
+      }
       req
         .then((list) => {
           this.setData({ list: list || [], loading: false });
@@ -65,7 +76,45 @@ Page({
               wx.showToast({ title: '已标记已售', icon: 'success' });
               this.loadList();
             })
-            .catch(() => {});
+            .catch(() => { });
+        }
+      },
+    });
+  },
+
+  // 下架
+  onOffline(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '提示',
+      content: '确认下架该商品？',
+      success: (res) => {
+        if (res.confirm) {
+          put('/api/goods/' + id + '/offline')
+            .then(() => {
+              wx.showToast({ title: '已下架', icon: 'success' });
+              this.loadList();
+            })
+            .catch(() => { });
+        }
+      },
+    });
+  },
+
+  // 上架
+  onOnline(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '提示',
+      content: '确认上架该商品？',
+      success: (res) => {
+        if (res.confirm) {
+          put('/api/goods/' + id + '/online')
+            .then(() => {
+              wx.showToast({ title: '已上架', icon: 'success' });
+              this.loadList();
+            })
+            .catch(() => { });
         }
       },
     });
@@ -83,7 +132,7 @@ Page({
               wx.showToast({ title: '已删除', icon: 'success' });
               this.loadList();
             })
-            .catch(() => {});
+            .catch(() => { });
         }
       },
     });

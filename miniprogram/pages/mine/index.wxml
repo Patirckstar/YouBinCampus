@@ -21,5 +21,10 @@
       <text class="menu-text">我收藏的</text>
       <text class="menu-arrow">›</text>
     </view>
+    <view class="menu-item" bind:tap="goWant">
+      <text class="menu-icon">🔖</text>
+      <text class="menu-text">我想要的</text>
+      <text class="menu-arrow">›</text>
+    </view>
   </view>
 </view>

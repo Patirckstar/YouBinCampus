@@ -36,4 +36,7 @@ public class GoodsVO {
     private String sellerAvatar;
 
     private String phone;
+
+    /** 想要人数（仅在商品详情 detail() 中填充） */
+    private Integer wantCount;
 }
