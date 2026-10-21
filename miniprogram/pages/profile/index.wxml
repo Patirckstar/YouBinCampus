@@ -1,0 +1,27 @@
+<view class="page">
+  <!-- 头像 -->
+  <view class="card">
+    <view class="avatar-box" bind:tap="onAvatarTap">
+      <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+      <view wx:else class="avatar avatar-placeholder">＋</view>
+      <view class="avatar-tip">点击更换头像</view>
+    </view>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form">
+    <view class="form-item">
+      <text class="label">昵称</text>
+      <input class="input" placeholder="请输入昵称" value="{{nickname}}" bindinput="onNicknameInput" maxlength="64" />
+    </view>
+    <view class="form-item">
+      <text class="label">电话</text>
+      <input class="input" type="number" placeholder="请输入电话" value="{{phone}}" bindinput="onPhoneInput" maxlength="20" />
+    </view>
+  </view>
+
+  <!-- 保存 -->
+  <view class="footer">
+    <button class="btn-save {{saving ? 'btn-disabled' : ''}}" bind:tap="onSave">{{saving ? '保存中...' : '保存'}}</button>
+  </view>
+</view>

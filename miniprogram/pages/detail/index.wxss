@@ -249,3 +249,15 @@
   color: #ffffff;
   font-size: 30rpx;
 }
+
+.message-btn {
+  flex: 1;
+  height: 84rpx;
+  line-height: 84rpx;
+  text-align: center;
+  border-radius: 42rpx;
+  background: #fff3ec;
+  color: #ff5f15;
+  font-size: 30rpx;
+  margin-right: 16rpx;
+}

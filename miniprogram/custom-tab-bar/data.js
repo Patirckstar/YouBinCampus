@@ -10,6 +10,11 @@ export default [
     url: 'pages/category/index',
   },
   {
+    icon: 'comment',
+    text: '消息',
+    url: 'pages/message/index',
+  },
+  {
     icon: 'person',
     text: '我的',
     url: 'pages/mine/index',

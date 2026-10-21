@@ -1,0 +1,27 @@
+<view class="page">
+  <view class="list">
+    <block wx:for="{{list}}" wx:key="peerId">
+      <view class="conv" bind:tap="onConvTap" data-item="{{item}}">
+        <view class="avatar-wrap">
+          <image wx:if="{{item.peerAvatar}}" class="avatar" src="{{item.peerAvatar}}" mode="aspectFill" />
+          <view wx:else class="avatar avatar-placeholder">友</view>
+          <view wx:if="{{item.unreadCount > 0}}" class="badge">{{item.unreadCount > 99 ? '99+' : item.unreadCount}}</view>
+        </view>
+        <view class="conv-main">
+          <view class="conv-top">
+            <text class="nick">{{item.peerNickname || '校园用户'}}</text>
+            <text class="time">{{item.timeText}}</text>
+          </view>
+          <view class="conv-bottom">
+            <text class="goods">{{item.goodsTitle || ''}}</text>
+          </view>
+          <view class="last">{{item.lastContent || ''}}</view>
+        </view>
+        <image wx:if="{{item.goodsImage}}" class="thumb" src="{{item.goodsImage}}" mode="aspectFill" />
+        <view wx:else class="thumb thumb-empty"></view>
+      </view>
+    </block>
+
+    <view wx:if="{{!list.length && !loading}}" class="empty">暂无消息</view>
+  </view>
+</view>

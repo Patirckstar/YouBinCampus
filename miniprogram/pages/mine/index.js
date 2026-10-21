@@ -25,7 +25,7 @@ Page({
         wx.setStorageSync('userInfo', user);
         this.applyUser(user);
       })
-      .catch(() => {});
+      .catch(() => { });
   },
 
   applyUser(user) {
@@ -46,5 +46,13 @@ Page({
 
   goWant() {
     wx.navigateTo({ url: '/pages/mylist/index?type=want' });
+  },
+
+  goBought() {
+    wx.navigateTo({ url: '/pages/mylist/index?type=bought' });
+  },
+
+  goEdit() {
+    wx.navigateTo({ url: '/pages/profile/index' });
   },
 });

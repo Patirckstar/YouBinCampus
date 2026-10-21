@@ -7,6 +7,7 @@
       <view class="nickname">{{userInfo.nickname || '校园用户'}}</view>
       <view class="uid">欢迎使用校园二手</view>
     </view>
+    <view class="edit-entry" bind:tap="goEdit">编辑资料</view>
   </view>
 
   <!-- 入口列表 -->
@@ -24,6 +25,11 @@
     <view class="menu-item" bind:tap="goWant">
       <text class="menu-icon">🔖</text>
       <text class="menu-text">我想要的</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bind:tap="goBought">
+      <text class="menu-icon">🛍️</text>
+      <text class="menu-text">我买到的</text>
       <text class="menu-arrow">›</text>
     </view>
   </view>

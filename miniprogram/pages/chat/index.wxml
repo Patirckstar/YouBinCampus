@@ -1,0 +1,29 @@
+<view class="page">
+  <!-- 顶部商品提示条 -->
+  <view class="goods-bar">
+    <text class="goods-title">{{goodsTitle || peerNickname || '聊天'}}</text>
+  </view>
+
+  <!-- 消息列表 -->
+  <view class="msg-list">
+    <block wx:for="{{messages}}" wx:key="id">
+      <view class="msg-row {{item.isMine ? 'mine' : 'other'}}">
+        <view class="bubble">{{item.content}}</view>
+      </view>
+    </block>
+    <view wx:if="{{!messages.length}}" class="empty">暂无消息，打个招呼吧</view>
+  </view>
+
+  <!-- 底部输入栏 -->
+  <view class="input-bar">
+    <input
+      class="input"
+      value="{{inputValue}}"
+      placeholder="输入消息..."
+      confirm-type="send"
+      bindinput="onInput"
+      bindconfirm="onSend"
+    />
+    <button class="send-btn" bind:tap="onSend">发送</button>
+  </view>
+</view>

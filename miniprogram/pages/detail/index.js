@@ -127,6 +127,27 @@ Page({
       });
   },
 
+  // 发消息：进入与该商品卖家的聊天（仅买家，非 owner）。
+  onMessage() {
+    const goods = this.data.goods;
+    if (!goods) {
+      return;
+    }
+    const peerNickname = goods.sellerNickname || '';
+    const goodsTitle = goods.title || '';
+    wx.navigateTo({
+      url:
+        '/pages/chat/index?goodsId=' +
+        this.data.id +
+        '&peerId=' +
+        goods.userId +
+        '&peerNickname=' +
+        encodeURIComponent(peerNickname) +
+        '&goodsTitle=' +
+        encodeURIComponent(goodsTitle),
+    });
+  },
+
   // 收藏 / 取消收藏
   onToggleFav() {
     const id = this.data.id;
@@ -159,23 +180,62 @@ Page({
     wx.navigateTo({ url: '/pages/publish/index?id=' + this.data.id });
   },
 
-  // 标记已售
+  // 标记已售（确认后可选买家，再成交）
   onSold() {
     const id = this.data.id;
     wx.showModal({
       title: '提示',
       content: '确认将该商品标记为已售？',
       success: (res) => {
-        if (res.confirm) {
-          put('/api/goods/' + id + '/sold')
-            .then(() => {
-              wx.showToast({ title: '已标记已售', icon: 'success' });
-              this.loadDetail(id);
-            })
-            .catch(() => { });
+        if (!res.confirm) {
+          return;
         }
+        get('/api/want/goods/' + id)
+          .then((list) => {
+            this.pickBuyer(id, list || []);
+          })
+          .catch(() => {
+            this.doSold(id, '');
+          });
       },
     });
+  },
+
+  // 选择买家：有想要人则弹 actionSheet，否则/取消则直接不指定买家成交
+  pickBuyer(id, list) {
+    if (!list.length) {
+      this.doSold(id, '');
+      return;
+    }
+    // showActionSheet 最多 6 项：最多展示前 5 个想要人 + 末尾兜底「直接成交」
+    const shown = list.slice(0, 5);
+    const itemList = shown.map((u) => (u && u.nickname) || '校园用户');
+    itemList.push('直接成交（不指定买家）');
+    wx.showActionSheet({
+      itemList,
+      success: (res) => {
+        const idx = res.tapIndex;
+        if (idx >= 0 && idx < shown.length) {
+          this.doSold(id, shown[idx].userId);
+        } else {
+          this.doSold(id, '');
+        }
+      },
+      fail: () => {
+        // 用户取消 actionSheet，按不指定买家继续成交，避免卡住
+        this.doSold(id, '');
+      },
+    });
+  },
+
+  doSold(id, buyerId) {
+    const url = '/api/goods/' + id + '/sold' + (buyerId ? '?buyerId=' + buyerId : '');
+    put(url)
+      .then(() => {
+        wx.showToast({ title: '已标记已售', icon: 'success' });
+        this.loadDetail(id);
+      })
+      .catch(() => { });
   },
 
   // 下架
@@ -237,7 +297,7 @@ Page({
           showCancel: false,
         });
       })
-      .catch(() => {});
+      .catch(() => { });
   },
 
   // 联系记录（仅卖家）
@@ -256,7 +316,7 @@ Page({
           showCancel: false,
         });
       })
-      .catch(() => {});
+      .catch(() => { });
   },
 
   // 删除

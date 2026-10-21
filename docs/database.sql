@@ -121,3 +121,18 @@ CREATE TABLE `want` (
   UNIQUE KEY `uk_user_goods` (`user_id`, `goods_id`),
   KEY `idx_goods_id` (`goods_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '想要标记表';
+
+-- ============================================================
+-- 9. 成交记录表 orders（规避 order 保留字）
+-- ============================================================
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '成交记录ID',
+  `buyer_id` BIGINT NOT NULL COMMENT '买家用户ID',
+  `seller_id` BIGINT NOT NULL COMMENT '卖家用户ID',
+  `goods_id` BIGINT NOT NULL COMMENT '商品ID',
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '成交时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_buyer_id` (`buyer_id`),
+  UNIQUE KEY `uk_goods_id` (`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='成交记录表';

@@ -15,6 +15,8 @@ Page({
       title = '我收藏的';
     } else if (type === 'want') {
       title = '我想要的';
+    } else if (type === 'bought') {
+      title = '我买到的';
     }
     wx.setNavigationBarTitle({ title });
   },
@@ -37,6 +39,8 @@ Page({
         req = get('/api/user/my-goods');
       } else if (this.data.type === 'want') {
         req = get('/api/want/mine');
+      } else if (this.data.type === 'bought') {
+        req = get('/api/order/mine');
       } else {
         req = get('/api/favorite/list');
       }
@@ -70,16 +74,53 @@ Page({
       title: '提示',
       content: '确认将该商品标记为已售？',
       success: (res) => {
-        if (res.confirm) {
-          put('/api/goods/' + id + '/sold')
-            .then(() => {
-              wx.showToast({ title: '已标记已售', icon: 'success' });
-              this.loadList();
-            })
-            .catch(() => { });
+        if (!res.confirm) {
+          return;
         }
+        get('/api/want/goods/' + id)
+          .then((list) => {
+            this.pickBuyer(id, list || []);
+          })
+          .catch(() => {
+            this.doSold(id, '');
+          });
       },
     });
+  },
+
+  // 选择买家：有想要人则弹 actionSheet，否则/取消则直接不指定买家成交
+  pickBuyer(id, list) {
+    if (!list.length) {
+      this.doSold(id, '');
+      return;
+    }
+    const shown = list.slice(0, 5);
+    const itemList = shown.map((u) => (u && u.nickname) || '校园用户');
+    itemList.push('直接成交（不指定买家）');
+    wx.showActionSheet({
+      itemList,
+      success: (res) => {
+        const idx = res.tapIndex;
+        if (idx >= 0 && idx < shown.length) {
+          this.doSold(id, shown[idx].userId);
+        } else {
+          this.doSold(id, '');
+        }
+      },
+      fail: () => {
+        this.doSold(id, '');
+      },
+    });
+  },
+
+  doSold(id, buyerId) {
+    const url = '/api/goods/' + id + '/sold' + (buyerId ? '?buyerId=' + buyerId : '');
+    put(url)
+      .then(() => {
+        wx.showToast({ title: '已标记已售', icon: 'success' });
+        this.loadList();
+      })
+      .catch(() => { });
   },
 
   // 下架

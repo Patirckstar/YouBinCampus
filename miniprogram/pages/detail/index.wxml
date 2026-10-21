@@ -68,5 +68,6 @@
     <text class="fav-icon">{{isWanted ? '⭐' : '☆'}}</text>
     <text class="fav-text">{{isWanted ? '已想要' : '想要'}}</text>
   </view>
+  <button wx:if="{{!isOwner}}" class="message-btn" bind:tap="onMessage">发消息</button>
   <button wx:if="{{!isOwner}}" class="contact-btn" bind:tap="onContact">联系卖家</button>
 </view>

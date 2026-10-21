@@ -69,8 +69,8 @@ public class GoodsController {
     }
 
     @PutMapping("/{id}/sold")
-    public Result<Void> markSold(@PathVariable Long id) {
-        goodsService.markSold(UserContext.requireUserId(), id);
+    public Result<Void> markSold(@PathVariable Long id, @RequestParam(required = false) Long buyerId) {
+        goodsService.markSold(UserContext.requireUserId(), id, buyerId);
         return Result.ok();
     }
 

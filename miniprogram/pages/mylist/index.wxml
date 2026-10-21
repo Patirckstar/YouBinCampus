@@ -14,7 +14,7 @@
     </block>
 
     <view wx:if="{{!list.length && !loading}}" class="empty">
-      {{type === 'my-goods' ? '你还没有发布过商品' : (type === 'want' ? '你还没有想要过的商品' : '你还没有收藏过商品')}}
+      {{type === 'my-goods' ? '你还没有发布过商品' : (type === 'want' ? '你还没有想要过的商品' : (type === 'bought' ? '你还没有买到过商品' : '你还没有收藏过商品'))}}
     </view>
   </view>
 </view>

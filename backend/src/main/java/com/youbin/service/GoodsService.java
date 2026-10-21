@@ -10,15 +10,18 @@ import com.youbin.dto.GoodsDTO;
 import com.youbin.entity.Category;
 import com.youbin.entity.Favorite;
 import com.youbin.entity.Goods;
+import com.youbin.entity.Order;
 import com.youbin.entity.User;
 import com.youbin.entity.Want;
 import com.youbin.mapper.CategoryMapper;
 import com.youbin.mapper.FavoriteMapper;
 import com.youbin.mapper.GoodsMapper;
+import com.youbin.mapper.OrderMapper;
 import com.youbin.mapper.UserMapper;
 import com.youbin.mapper.WantMapper;
 import com.youbin.vo.GoodsVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -37,6 +40,7 @@ public class GoodsService {
     private final UserMapper userMapper;
     private final FavoriteMapper favoriteMapper;
     private final WantMapper wantMapper;
+    private final OrderMapper orderMapper;
 
     public GoodsVO publish(Long userId, GoodsDTO dto) {
         Goods g = new Goods();
@@ -68,8 +72,25 @@ public class GoodsService {
         goodsMapper.deleteById(id);
     }
 
-    public void markSold(Long userId, Long id) {
+    public void markSold(Long userId, Long id, Long buyerId) {
         Goods g = requireOwn(userId, id);
+        if (buyerId != null) {
+            if (buyerId.equals(userId)) {
+                throw new BizException(ResultCode.BAD_REQUEST.getCode(), "不能成交给自己");
+            }
+            if (userMapper.selectById(buyerId) == null) {
+                throw new BizException(ResultCode.BAD_REQUEST.getCode(), "买家不存在");
+            }
+            Order order = new Order();
+            order.setBuyerId(buyerId);
+            order.setSellerId(userId);
+            order.setGoodsId(id);
+            try {
+                orderMapper.insert(order);
+            } catch (DuplicateKeyException e) {
+                // 唯一键 uk_goods_id 兜底：已成交过则忽略，保证幂等
+            }
+        }
         g.setStatus(2);
         goodsMapper.updateById(g);
     }

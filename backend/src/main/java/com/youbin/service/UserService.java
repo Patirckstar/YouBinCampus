@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.youbin.common.BizException;
 import com.youbin.common.ResultCode;
 import com.youbin.dto.LoginDTO;
+import com.youbin.dto.UserUpdateDTO;
 import com.youbin.entity.User;
 import com.youbin.mapper.UserMapper;
 import com.youbin.util.JwtUtil;
@@ -37,6 +38,36 @@ public class UserService {
     public UserVO info(Long userId) {
         User user = getUser(userId);
         return toVO(user, false);
+    }
+
+    public UserVO updateInfo(Long userId, UserUpdateDTO dto) {
+        String nickname = normalize(dto.getNickname());
+        String avatar = normalize(dto.getAvatar());
+        String phone = normalize(dto.getPhone());
+        if (nickname == null && avatar == null && phone == null) {
+            throw new BizException(ResultCode.BAD_REQUEST.getCode(), "没有需要更新的内容");
+        }
+        User user = getUser(userId);
+        if (nickname != null) {
+            user.setNickname(nickname);
+        }
+        if (avatar != null) {
+            user.setAvatar(avatar);
+        }
+        if (phone != null) {
+            user.setPhone(phone);
+        }
+        userMapper.updateById(user);
+        return toVO(user, false);
+    }
+
+    /** 纯空白按 null 处理，避免写入空串 */
+    private String normalize(String s) {
+        if (s == null) {
+            return null;
+        }
+        String t = s.trim();
+        return t.isEmpty() ? null : t;
     }
 
     public User getUser(Long userId) {
